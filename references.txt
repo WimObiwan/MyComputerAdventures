@@ -1,0 +1,8 @@
+http://susantsahu.blogspot.be/2013/07/list-all-workspaces-in-tfs-removing-tfs.html
+==> http://mycomputeradventures.blogspot.in/2012/01/removing-tfs-workspaces-from-old-users.html
+
+http://stackoverflow.com/questions/12411932/cant-remove-workspace-from-tfs
+==> http://mycomputeradventures.blogspot.com/2012/01/removing-tfs-workspaces-from-old-users.html
+
+http://stackoverflow.com/questions/11921138/netbeans-c-c-7-2-std-c11-not-recognized-by-gcc-v4-6-or-lower
+==> http://mycomputeradventures.foxinnovations.be/2011/12/support-for-c0x-c11-in-netbeans.html

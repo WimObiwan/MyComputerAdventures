@@ -1,0 +1,38 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>"SQL Server performance testing" </title></head><body>
+<p>With your databases stored on SSD-disks on fast development machines, it becomes difficult to reproduce performance problems that occur on customer machines.  This post gives some tricks to allow troubleshoot performance problems, while still using your fast development machine.</p>
+<!--more-->
+
+<h1 id="store-your-database-data-file-on-an-external-usb-disk">Store your database data file on an external USB disk</h1>
+<p>Before you detache the USB drive, you should:</p>
+<ul>
+<li>In SQL Server Management Studio: Bring the database offline (or detach the database)</li>
+<li>In Windows: Prepare the USB drive to detach (as you should always do with USB-disks)</li>
+</ul>
+<p>If you happen to forget one of these, it can happen that the database gets corrupted.  When this happens, you can correct the problems by running a <code>DBCC CHECKDB</code> as in single-user mode: </p>
+<p>{% highlight sql %}
+ALTER DATABASE [MyDatabase-USBDISK]
+SET SINGLE_USER
+WITH ROLLBACK IMMEDIATE;
+GO</p>
+<p>DBCC CHECKDB;
+GO</p>
+<p>ALTER DATABASE [MyDatabase-USBDISK]
+SET MULTI_USER;
+GO
+{% endhighlight %}</p>
+<h1 id="prevent-caching-of-query-data-in-memory">Prevent caching of query data in memory</h1>
+<p>A slow USB disk will make the query slow once, but after that, the query will fast because the data is cached in (much faster) memory.  To prevent this, you can run this query:</p>
+<p>{% highlight sql %}
+WHILE 1=1 -- repeat forever
+BEGIN
+    -- clear query cache
+    DBCC FREEPROCCACHE;
+    -- clear data cache
+    DBCC DROPCLEANBUFFERS;
+    -- wait 3s
+    WAITFOR DELAY '00:00:03'
+END
+GO
+{% endhighlight %}</p>
+<p>This query will run forever unless an error happens (e.g. connection issue) or the query is canceled by the user.</p>
+</body></html>

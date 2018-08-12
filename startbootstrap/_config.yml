@@ -1,0 +1,29 @@
+# Site settings
+title: My Computer Adventures
+header-img: img/home-bg.jpg
+email: wim@obiwan.be
+copyright_name: Fox Innovations / Wim Devos
+description: "A blog about programming and system administration on Linux and Windows."
+baseurl: ""
+url: "http://mycomputeradventures.foxinnovations.be"
+twitter_username: wimobiwan
+github_username:  wimobiwan
+# facebook_username:  IronSummitMedia
+email_username:  wim@obiwan.be
+
+excerpt_separator: <!--more-->
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+paginate: 25
+exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
+
+gems: [jekyll-paginate, jekyll-feed]
+
+defaults:
+  -
+    values:
+      layout: "post"
+      author: "Wim"

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include head.html %}
+
+<body>
+
+    <div id="ad" class="sideBar boxLeft">
+        {% include adwords.html %}
+        <!--div style="vertical-align:top;text-align:left;">
+            <h1>My Sidebar</h1>
+        </div>
+        <p style="text-align:left;padding:0 0 0 2px;">
+            <b>Information:</b>
+            This is some information that you can see even when you scroll.
+        </p-->
+    </div>
+    
+    {% include ga.html %}
+
+    {% include nav.html %}
+
+    {{ content }}
+
+    {% include footer.html %}
+
+</body>
+
+</html>
