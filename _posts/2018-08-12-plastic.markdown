@@ -43,19 +43,19 @@ Workflow/functional things that I miss daily:
 ---
 
 * Commit only specific lines.  This is something I use continuously on GIT (so-called *hunks*) to isolate changes in separate commits.  
-[[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/15636960-add-git-like-staging-of-parts-of-files), and serveral others.
+[[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/15636960-add-git-like-staging-of-parts-of-files), and several others.
 * Squash/Amend commits.  Use-case: you just checked in a change, but something else should be included.  In GIT, this is easy (as long as you didn’t push) by doing a second commit, and squash them into one.  Or by amending the original commit.
 [[Also discussed on UserVoice, at least the amend part]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/5221214-amend-commits)
-* Reset commits.  Use-case: you just checked in a change, but something needs to be changed.  In GIT, this is easy (as long as you didn’t push) by doing a *Reset*, which takes the commited files back into your pending changes, where they can be changed.  
-[[Also discussed on UserVoice, where another solution is proposed, but in my opninion less generic]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/7010758-create-shelve-from-changeset)
+* Reset commits.  Use-case: you just checked in a change, but something needs to be changed.  In GIT, this is easy (as long as you didn’t push) by doing a *Reset*, which takes the committed files back into your pending changes, where they can be changed.  
+[[Also discussed on UserVoice, where another solution is proposed, but in my opinion less generic]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/7010758-create-shelve-from-changeset)
 * Blame.  I miss the blame functionality that tools like GITExtensions provide.  When troubleshooting a problem, blame is extremely helpful to identify when specific lines were added to the code-base.  PlasticSCM offers a command-line alternative which can be useful, but still too cumbersome to be used on a day-by-day basis.  It should be integrated in the GUI.
 * Staging...  There is no place to put files between your workspace and the repository.  I use the staging area continuously as a *personal review* stage of my own code (together with the staging/committing of partial files/hunks).  
 [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/6387309-add-git-like-staging)
 * When the PlasticSCM server is down or unreachable, you are in trouble.  Every click you do results in a freeze for about half a minute, and finishes with an error message.  When the server comes up again, everything is back to normal, even without restarting the client.
   * I guess the solution is setting up local server, but I think this is a big step back from the simplicity that PlasticSCM provides to my workflow now.
-  * Additionally, I didn't dare to try it out because of stories about changing Changeset ids, which is absolutely intolerable for me...  
+  * Additionally, I didn't dare to try it out because of stories about changing changeset ids, which is absolutely intolerable for me...  
   X-links seem to point to some GUID internally (not a changeset-id), so I guess the *changing changeset ids* don’t affect X-links.
-  * A workaround would be some kind of *offline mode*, to allow using some part of the functionality without a server.  There is [some documentation](https://www.plasticscm.com/documentation/ides/plastic-scm-version-control-ides-integrations-guide.shtml#WorkingofflineandunbindingthesolutionfromPlasticSCM) about doing it in the VisualStudio plugin.  But this is not what I want to do: I want to *temporarely* work offline, preferably with as much functionality of the SCM still working, and definitely without unbinding or removing source control bindings.  And it is not related to VisualStudio: it should be in the Plastic client itself.  
+  * A workaround would be some kind of *offline mode*, to allow using some part of the functionality without a server.  There is [some documentation](https://www.plasticscm.com/documentation/ides/plastic-scm-version-control-ides-integrations-guide.shtml#WorkingofflineandunbindingthesolutionfromPlasticSCM) about doing it in the VisualStudio plugin.  But this is not what I want to do: I want to *temporarily* work offline, preferably with as much functionality of the SCM still working, and definitely without unbinding or removing source control bindings.  And it is not related to VisualStudio: it should be in the Plastic client itself.  
   This is something that is supported by other server-centric systems like Team Foundation Server.
 * When switching between branches in Plastic, you always need to shelve/unshelve.  Even when creating a new branch on the current changeset!  This is an excellent feature of GIT (only recognized when you lose it…), which allows to change branch (even with pending changes) when this doesn’t result in conflicts.
 * No simple support for rebase. [PlasticSCM states that it is not needed](http://blog.plasticscm.com/2016/06/plastic-vs-git-rerere-and-rebase.html), and I agree to some extent.  But, in my opinion, it is still a missing feature which has useful applications.
@@ -90,18 +90,18 @@ Missing features:
   * Or is it because the changeset the X-link points to has been deleted itself? (in which case it seams a bug to me)  
 ![plastic-remove-changeset2.png](/assets/2018-08-12-plastic-remove-changeset2.png)
 
-* The Branch explorer is the (in my opinium) biggest feature of PlasticSCM, but I miss the ability to show the Changeset id in view (without needing to click or hoover on each individual changeset.  Generally, it would be great to further customize the GUI.  
+* The Branch explorer is the (in my opinion) biggest feature of PlasticSCM, but I miss the ability to show the Changeset id in view (without needing to click or hoover on each individual changeset.  Generally, it would be great to further customize the GUI.  
 Strangely, the changeset id is shown when using the Version tree, which is a similar view (*Workspace Explorer*, right-click on file, *View history as 2D revision tree*):  
 ![plastic-changesetidin2dview.png](/assets/2018-08-12-plastic-changesetidin2dview.png)
 
   [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/8876401-show-changeset-numbers-in-branch-explorer)
 
 
-* Commandline / Automation / `cm.exe`
+* Command-line / Automation / `cm.exe`
   * Unable to obtain current branch...  Some ideas: http://www.plasticscm.net/topic/3223-get-current-branch-name-on-command-line/ but this is not a clean solution to me.
 * Probably I’m too old-school, but generally I miss the concept of having both *(customizable?) toolbar-buttons for fast access* vs *menu bar with all (more advanced) features)*.  Probably the same reason I still dislike the Ribbon-bar in MS-Office...
 * Some actions prevent changesets to be removed (like the origin of a cherry pick or merge).  It should be possible to cherry pick a changeset and remove the original later on (e.g. after committing to the wrong branch).
-* Entering commit messages would be greately improved when there would be autocompletion and spelling checking, as done by GITExtensions.  
+* Entering commit messages would be greatly improved when there would be autocompletion and spelling checking, as done by GITExtensions.  
 [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/34336972-auto-complete-suggest-filenames-and-or-class-types)
 
 Bugs, annoyances, sloppiness:
@@ -135,7 +135,7 @@ But when you show the Options (which I leave open all the time to show the prope
  	
 * When you want to apply an Attribute, set the value, but forget to set the Attribute name:  
 ![plastic-attribute.png](/assets/2018-08-12-plastic-attribute.png)
-You obviously get a messagebox, but after clicking *OK*, the parent *Apply attribute* window is closed too, including the text you just entered below Value...
+You obviously get a message-box, but after clicking *OK*, the parent *Apply attribute* window is closed too, including the text you just entered below Value...
 In my opinion, better would be to not show a message box, but disable the OK button until an Attribute is selected.
 
 * In the branch window, after updating something in the properties of the right panel, the change is immediately visible in the branch list, but the filter is not re-applied (or at least not always).  E.g., when you have a filter on an attribute, and add an attribute, the branch window still shows the filtered results on the old attribute value.
