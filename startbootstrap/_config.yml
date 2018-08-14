@@ -5,7 +5,7 @@ email: wim@obiwan.be
 copyright_name: Fox Innovations / Wim Devos
 description: "A blog about programming and system administration on Linux and Windows."
 baseurl: ""
-url: "http://mycomputeradventures.foxinnovations.be"
+url: "https://mycomputeradventures.foxinnovations.be"
 twitter_username: wimobiwan
 github_username:  wimobiwan
 # facebook_username:  IronSummitMedia
