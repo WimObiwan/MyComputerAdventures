@@ -1,7 +1,7 @@
 ---
 title: "RDP credential caching"
 tags: [windows, mstsc, rdp]
-image: /assets/2018-03-18-rdp-client-credential-caching.jpeg
+image: rdp-client-credential-caching.jpeg
 ---
 
 In Microsoft's RDP client, you can enable a checkbox to save your password.  Usually, this doesn't work, because by default delegating the credentials isn't allowed by the Group Policy.  This post explains how to enable this.
@@ -9,7 +9,7 @@ In Microsoft's RDP client, you can enable a checkbox to save your password.  Usu
 <!--more-->
 
 When you connect to a *Terminal Server*, you can get this error message when using saved credentials: **Your credentials didn't work.  The credentials that were used to connect to *\[some server\]* did not work.  Please enter new credentials.**
-![Enable](/assets/2018-03-18-rdp-client-credential-caching-0.png) 
+![Enable](rdp-client-credential-caching-0.png) 
 
 
 Follow these steps to enable delegating credentials:
@@ -34,15 +34,15 @@ Follow these steps to enable delegating credentials:
    * In the right pane, double click on:
 
       * Allow delegating saved credentials with NTLM-only server authentication  
-        ![Allow delegating saved credentials with NTLM-only server authentication](/assets/2018-03-18-rdp-client-credential-caching-1.png)
+        ![Allow delegating saved credentials with NTLM-only server authentication](rdp-client-credential-caching-1.png)
 
    * Select the radio button *Enabled*:  
-     ![Enable](/assets/2018-03-18-rdp-client-credential-caching-2.png) 
+     ![Enable](rdp-client-credential-caching-2.png) 
 
    * Click on *Show...* beside *Add servers to the list*.
 
    * Add a new entry `TERMSRV/*`to enable delegation for all servers:  
-     ![Enable](/assets/2018-03-18-rdp-client-credential-caching-3.png) 
+     ![Enable](rdp-client-credential-caching-3.png) 
 
    * Repeat the same for *Allow delegating saved credentials*.
 
