@@ -1,10 +1,10 @@
 ---
 title: "One year of Plastic"
 tags: [git, plastic]
-image: /assets/2018-08-12-plastic-logo.png
+image: plastic-logo.png
 ---
 
-My experience after one year of working with PlasticSCM, after moving from GIT.
+My experience after one year of working with PlasticSCM, after moving from GIT.x
 
 <!--more-->
 
@@ -67,8 +67,8 @@ Things that work different and cause me friction, even after a year:
 
 * Files keep getting *checked out* even when there are no changes.  As a workaround, I usually check which files I modified in *Pending Changes*, and filter them out manually.  Not a big issue, but it is time-consuming to *Undo Changes" on the files that weren’t changed.  Maybe I will write a Powershell script to do this automatically.
 * There is a strange difference between *working on a changeset* and *working on a branch*.  
-![plastic-changeset.png](/assets/2018-08-12-plastic-changeset.png)  
-![plastic-branch.png](/assets/2018-08-12-plastic-branch.png)
+![plastic-changeset.png](plastic-changeset.png)  
+![plastic-branch.png](plastic-branch.png)
 It is something I only discovered after 6 months working in Plastic.   
 Probably, it was due to the fact that I use the Branch Explorer to switch between branches.  In GIT you have a similar difference, but I never had a problem with it, since going *off-branch* was always clearly indicated by the tools I used.
 * When in *Branch-mode*, you can update your workspace with the last commits from other users (open *Pending Changes*, right-click, *Apply local change*). This doesn’t work in *Changeset-mode*. When you are not on the last changeset and when you have pending changes, it is impossible to switch between the 2 *modes* without first shelving the changes.   
@@ -83,16 +83,16 @@ Missing features:
 --- 
 
 * Trying to remove certain changesets give strange errors:  
-![plastic-remove-changeset1.png](/assets/2018-08-12-plastic-remove-changeset1.png)
+![plastic-remove-changeset1.png](plastic-remove-changeset1.png)
  
   * It would be great to know the reason...  Especially when the possible ones listed don’t apply...
   * Is it because it contains an X-link to another repository?
   * Or is it because the changeset the X-link points to has been deleted itself? (in which case it seams a bug to me)  
-![plastic-remove-changeset2.png](/assets/2018-08-12-plastic-remove-changeset2.png)
+![plastic-remove-changeset2.png](plastic-remove-changeset2.png)
 
 * The Branch explorer is the (in my opinion) biggest feature of PlasticSCM, but I miss the ability to show the Changeset id in view (without needing to click or hoover on each individual changeset.  Generally, it would be great to further customize the GUI.  
 Strangely, the changeset id is shown when using the Version tree, which is a similar view (*Workspace Explorer*, right-click on file, *View history as 2D revision tree*):  
-![plastic-changesetidin2dview.png](/assets/2018-08-12-plastic-changesetidin2dview.png)
+![plastic-changesetidin2dview.png](plastic-changesetidin2dview.png)
 
   [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/8876401-show-changeset-numbers-in-branch-explorer)
 
@@ -108,40 +108,40 @@ Bugs, annoyances, sloppiness:
 --- 
 
 * Several redraw problems  
-  ![plastic-redraw1.png](/assets/2018-08-12-plastic-redraw1.png)
-  ![plastic-redraw2.png](/assets/2018-08-12-plastic-redraw2.png)
+  ![plastic-redraw1.png](plastic-redraw1.png)
+  ![plastic-redraw2.png](plastic-redraw2.png)
 * Inconsistent "menus":
   
   * When *merging*: the *Comparison* settings are located in some Bootstrap-on-mobile-like menu at the right-side:  
-  ![plastic-inconsistency1.png](/assets/2018-08-12-plastic-inconsistency1a.png)
+  ![plastic-inconsistency1.png](plastic-inconsistency1a.png)
   * When *diffing*: the *Comparison* settings are located in an options drop-down button:  
-  ![plastic-inconsistency2.png](/assets/2018-08-12-plastic-inconsistency1b.png)
+  ![plastic-inconsistency2.png](plastic-inconsistency1b.png)
 
 * Inconsistent visualization of "properties/attributes":
 
   * When showing branch properties in *Branches* overview, *Properties* and *Attributes* are shown as tabs.
-  ![plastic-inconsistency2a.png](/assets/2018-08-12-plastic-inconsistency2a.png)
+  ![plastic-inconsistency2a.png](plastic-inconsistency2a.png)
   * When showing branch properties in *Branch Explorer*, *Properties* and *Attributes* are shown as some "accordion" panel.
-  ![plastic-inconsistency2b.png](/assets/2018-08-12-plastic-inconsistency2b.png)
+  ![plastic-inconsistency2b.png](plastic-inconsistency2b.png)
  
 * Aborting certain merges is even more complex than in git.  Some situations can only be solved by using the command line. This post saved me many times: [Abort merge](http://www.plasticscm.net/topic/1193-abort-merge/)
 * I also haven't found a way yet to interrupt the merge conflict resolution.  If you merge a huge branch with 100 changed files and 50 of them are causing conflicts, then you will get 50 times a merge resolution window.  There is no way to say *stop*, *cancel*, *pause/resume*, use origin for all files, ...
 * The right-side panel is used both for *filters* as for *properties* (such as attributes).  This is confusing.  The [Digikam](https://digikam.org) GUI solves a similar problem by using 2 panels (by default): left for all kinds of filtering on the pictures, right for properties/attributes/... of the pictures  Moreover, in the *Branch explorer*, you need to press the button *Options* to see the *Properties*. Even after a year, I'm not yet used to it.
 * It is not intuitive whether specific properties/settings are applied to all users or are user-specific.  Branch tags, color rules for changesets, ...
 * In the Branch Explorer, a graph can be displayed, showing the number of commits per day:  
-![plastic-stats1.png](/assets/2018-08-12-plastic-stats1.png)
+![plastic-stats1.png](plastic-stats1.png)
 But when you show the Options (which I leave open all the time to show the properties), the last year (in my case) isn’t shown because it is hidden by the Options panel.  And there is no way to re-scale or scroll the graph.
-![plastic-stats2.png](/assets/2018-08-12-plastic-stats2.png)
+![plastic-stats2.png](plastic-stats2.png)
  	
 * When you want to apply an Attribute, set the value, but forget to set the Attribute name:  
-![plastic-attribute.png](/assets/2018-08-12-plastic-attribute.png)
+![plastic-attribute.png](plastic-attribute.png)
 You obviously get a message-box, but after clicking *OK*, the parent *Apply attribute* window is closed too, including the text you just entered below Value...
 In my opinion, better would be to not show a message box, but disable the OK button until an Attribute is selected.
 
 * In the branch window, after updating something in the properties of the right panel, the change is immediately visible in the branch list, but the filter is not re-applied (or at least not always).  E.g., when you have a filter on an attribute, and add an attribute, the branch window still shows the filtered results on the old attribute value.
  
 * Very often I have these errors in the Pending changes view: (multiple times in a row)  
-  ![plastic-pendingchangeserrors.png](/assets/2018-08-12-plastic-pendingchangeserrors.png)   
+  ![plastic-pendingchangeserrors.png](plastic-pendingchangeserrors.png)   
   ```
   Exception has been thrown by the target of an invocation.
   An item with the same key has already been added.
@@ -149,7 +149,7 @@ In my opinion, better would be to not show a message box, but disable the OK but
   After clicking OK (many times), the application seems to continue.  No big deal, but still annoying.  
   Another place where the same errors happen is when opening the *2D Version tree* for a specific file in the *Workspace* (*Workspace Explorer*, right-click on file, *View history as 2D revision tree*).
 * Another error I often get is this one:  
-  ![plastic-couldnotfindfile.png](/assets/2018-08-12-plastic-couldnotfindfile.png)
+  ![plastic-couldnotfindfile.png](plastic-couldnotfindfile.png)
   ```
   Could not find file %temp%\<guid>.cs
   ```
@@ -166,16 +166,16 @@ Anyway, since encountering this problem, I run this command after applying every
 
 * I use *symlinks* very often, and they are said to be supported, but I don’t get how it works:  
   *	Visually, they are shown as 0 bytes:
-    ![plastic-symlinks1.png](/assets/2018-08-12-plastic-symlinks1.png)
+    ![plastic-symlinks1.png](plastic-symlinks1.png)
   *	Contents in diff:  
-    ![plastic-symlinks2.png](/assets/2018-08-12-plastic-symlinks2.png)
+    ![plastic-symlinks2.png](plastic-symlinks2.png)
   * If it is not a bug, it is at least not intuitive.
   * After losing code because of these issues, I stopped using symlinks with PlasticSCM.
   
   [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/7562991-support-symlinks-on-windows)
 
 * There is an inconsistency with branch names in command line queries:  
-  ![plastic-cm-findbranches-inconsistency.png](/assets/2018-08-12-plastic-cm-findbranches-inconsistency.png)  
+  ![plastic-cm-findbranches-inconsistency.png](plastic-cm-findbranches-inconsistency.png)  
   So, the `name` the where clause is the final part of the path, and `name`in the output is the full path.
 
   ```

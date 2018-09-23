@@ -14,12 +14,16 @@ description: "A blog about programming and system administration on Windows and 
             {{ post.subtitle }}
         </h3>
         {% endif %}
-        <p>
         <table>
             <tr>
                 <td style="max-width:20%;">
                     {% if post.image %}
-                        <img src="{{ post.image }}" alt="Image" align="left" style="max-width:200px; max-height:150px; margin: 0px 10px;" />
+                        {% assign firstchar = post.image | slice: 0 %}
+                        {% if firstchar == '/' %}
+                            <img src="{{ post.image }}" alt="Image" align="left" style="max-width:200px; max-height:150px; margin: 0px 10px;" />
+                        {% else %}
+                            <img src="{{ post.url }}{{ post.image }}" alt="Image" align="left" style="max-width:200px; max-height:150px; margin: 0px 10px;" />
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>
@@ -27,7 +31,6 @@ description: "A blog about programming and system administration on Windows and 
                 </td>
             </tr>
         </table>
-        </p>
     </a>
     <p class="post-meta">Posted by {% if post.author %}{{ post.author }}{% else %}{{ site.title }}{% endif %} on {{ post.date | date: "%B %-d, %Y" }}</p>
 </div>
