@@ -1,7 +1,7 @@
 ---
 title: "Google Sites and Bing Webmaster Tools ownership verification"
 tags: [sites]
-image: /assets/2012-05-10-google-sites-and-bing-webmaster-tools-0.png
+image: google-sites-and-bing-webmaster-tools-0.png
 ---
 
 Google sites removes the *dot* in the verification `meta`-tag of the Bing Webmaster Tools.  Luckily, there is a workaround.
@@ -24,7 +24,7 @@ Copy paste the `<meta>`-tag above to the `Google Webmaster Tools` setting.
 When you click `Save`, and inspect the source of your Google Sites site, you will find the `<meta>`-tag, but for some reason, the name is changed from
 `msvalidate.01` to `msvalidate01` (**without the dot**). Consequently, Bing Webmaster Tools tells that the `meta`-tag is missing, and they could net verify your ownership of the site.
 
-![Screenshot](/assets/2012-05-10-google-sites-and-bing-webmaster-tools-1.png)
+![Screenshot](google-sites-and-bing-webmaster-tools-1.png)
 
 A workaround for this problem is to use `msvalidate-01` (**with a hyphen**) instead of `msvalidate.01`. 
 The hyphen is correctly displayed in the source of the website, and Bing Webmaster Tools succesfully validates your ownership of the site.

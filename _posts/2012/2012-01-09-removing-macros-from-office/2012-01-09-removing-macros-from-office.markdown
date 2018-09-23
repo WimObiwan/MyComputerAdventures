@@ -1,7 +1,7 @@
 ---
 title: "Removing macro's from a LibreOffice/OpenOffice document"
 tags: [libreoffice/openoffice]
-image: /assets/2012-01-09-libreoffice.png
+image: libreoffice.png
 ---
 
 This procedure explains a way to remove macros from a LibreOffice/OpenOffice

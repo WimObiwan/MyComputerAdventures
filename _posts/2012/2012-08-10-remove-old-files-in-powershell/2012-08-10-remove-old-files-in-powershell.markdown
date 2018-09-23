@@ -1,7 +1,7 @@
 ---
 title: "Cleanup old files from your harddisk using PowerShell"
 tags: [windows, powershell]
-image: /assets/2012-08-10-powershell.png
+image: powershell.png
 ---
 
 A PowerShell script to remove old files.
@@ -18,4 +18,4 @@ A confirmation is asked because `-Confirm` is included. When files cannot be rem
 
 *(Split over multiple lines for readability.)*
 
-![Screenshot](/assets/2012-08-10-powershell-remove-files.png "Screenshot")
+![Screenshot](powershell-remove-files.png "Screenshot")

@@ -1,7 +1,7 @@
 ---
 title: "GIT External Diff / Merge tools"
 tags: [git]
-image: /assets/2012-08-30-git.png
+image: git.png
 ---
 
 An overview of the different external git diff and merge tools, and how to configure them.

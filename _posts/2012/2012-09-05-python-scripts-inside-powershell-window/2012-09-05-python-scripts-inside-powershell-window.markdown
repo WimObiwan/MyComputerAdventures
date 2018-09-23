@@ -1,7 +1,7 @@
 ---
 title: "Python scripts inside PowerShell window"
 tags: [python, powershell]
-image: /assets/2012-09-05-python-scripts-in-powershell-0.png
+image: python-scripts-in-powershell-0.png
 ---
 
 Python scripts can be run seamlessly in a Powershell console window.
@@ -40,4 +40,4 @@ You can test it by creating and running a small script:
 .\MyScript.py
 ```
 
-![Screenshot](/assets/2012-09-05-python-scripts-in-powershell.png)
+![Screenshot](python-scripts-in-powershell.png)

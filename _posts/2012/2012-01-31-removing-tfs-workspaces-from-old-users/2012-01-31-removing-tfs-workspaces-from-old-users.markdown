@@ -1,7 +1,7 @@
 ---
 title: "Removing TFS workspaces from old users or old computers"
 tags: [tfs]
-image: /assets/2012-01-31-removing-tfs-workspaces.png
+image: removing-tfs-workspaces.png
 ---
 
 When working with *Microsoft Team Foundation Server*, sometimes it can be

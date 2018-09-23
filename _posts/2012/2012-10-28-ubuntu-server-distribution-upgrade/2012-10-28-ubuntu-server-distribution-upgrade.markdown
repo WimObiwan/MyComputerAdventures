@@ -1,7 +1,7 @@
 ---
 title: "Headless Ubuntu (Server) distribution upgrade"
 tags: [linux]
-image: /assets/2012-10-28-ubuntu.png
+image: ubuntu.png
 ---
 
 Information about how to upgrade Ubuntu from the command line.
