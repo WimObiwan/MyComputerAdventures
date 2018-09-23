@@ -1,7 +1,7 @@
 ---
 title: "SQL Server performance testing"
 tags: [sql, performance]
-image: /assets/2018-04-04-sql-server-performance.png
+image: sql-server-performance.png
 ---
 
 With your databases stored on SSD-disks on fast development machines, it becomes difficult to reproduce performance problems that occur on customer machines.  This post gives some tricks to allow troubleshoot performance problems, while still using your fast development machine.
