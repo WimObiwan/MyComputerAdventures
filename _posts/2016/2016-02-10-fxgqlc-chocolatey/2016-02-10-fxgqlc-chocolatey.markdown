@@ -1,7 +1,7 @@
 ---
 title:  "FxGqlC Chocolatey package"
 tags: [chocolatey, fxgqlc]
-image: /assets/2016-02-10-fxgqlc-chocolatey.png
+image: fxgqlc-chocolatey.png
 ---
 
 Good News! FxGqlC is now also accepted as official Chocolatey package.

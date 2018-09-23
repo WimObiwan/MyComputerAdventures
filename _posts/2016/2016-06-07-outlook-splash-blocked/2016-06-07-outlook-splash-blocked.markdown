@@ -1,7 +1,7 @@
 ---
 title:  "Outlook stuck on splash screen"
 tags: [windows, msoffice]
-image: /assets/2016-06-07-outlook.png
+image: outlook.png
 ---
 
 After running Microsoft Outlook for years without problems, it won't start anymore 
@@ -14,7 +14,7 @@ an Office 365 online account.  But I assume it is rather unrelated to the versio
 
 After a reboot, I launched Outlook, and this was the result:
 
-![Outlook Splash](/assets/2016-06-07-outlook-splash.png)
+![Outlook Splash](outlook-splash.png)
 
 The splash screen was shown infinitely, while indicating the status
 ```Processing...```.
