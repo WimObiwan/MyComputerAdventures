@@ -1,7 +1,7 @@
 ---
 title:  "Getting started with VS Code using C# and .NET Core on Ubuntu"
 tags: [c#, visualstudio, ubuntu]
-image: /assets/2016-10-07-vs2015.png
+image: vs2015.png
 ---
 
 A tutorial on how to compile and run C# application on Ubuntu with Visual Studio Code and .NET Core.
