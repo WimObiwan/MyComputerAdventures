@@ -1,7 +1,7 @@
 ---
 title: "Jenkins GIT polling blocked "
 tags: [jenkins/hudson]
-image: /assets/2013-07-05-jenkins-git-polling-blocked-0.png
+image: jenkins-git-polling-blocked-0.png
 ---
 
 This post contains a dirty workaround for blocked Git SSH processes on a Hudson/Jenkins build server.
@@ -36,8 +36,8 @@ Get-Process | where { $_.ProcessName -eq 'SSH' -and $_.StartTime -lt (Get-Date).
 
 Configuration of the Windows Scheduled task:
 
-![Screenshot 1](/assets/2013-07-05-jenkins-git-polling-blocked-1.png)
-![Screenshot 2](/assets/2013-07-05-jenkins-git-polling-blocked-2.png)
+![Screenshot 1](jenkins-git-polling-blocked-1.png)
+![Screenshot 2](jenkins-git-polling-blocked-2.png)
 
 As argument, you can specify:
 

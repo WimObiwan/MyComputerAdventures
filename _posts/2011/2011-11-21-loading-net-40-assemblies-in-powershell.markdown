@@ -1,7 +1,7 @@
 ---
 title: "Loading .net 4.0 assemblies in PowerShell 2.0"
 tags: [powershell]
-image: /assets/2011-11-21-powershell.png
+image: powershell.png
 ---
 
 This post is about changing the configuration of a managed application to 
