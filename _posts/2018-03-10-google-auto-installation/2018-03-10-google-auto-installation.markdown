@@ -1,7 +1,7 @@
 ---
 title: "Android Auto, and how to use it in non-supported countries"
 tags: [android-auto, opel, apk]
-image: /assets/2018-03-10-google-auto-installation-logo.jpg
+image: google-auto-installation-logo.jpg
 ---
 
 Android Auto is a great application on your Android phone, that integrates seamlessly with all types of new cars. 
@@ -36,11 +36,11 @@ To force installing Android Auto on your phone in a non-supported country, you c
 First you need to allow installations from sources other than the Google Play store:
 
 * Open the *Settings* on the phone  
-   ![Settings step 1](/assets/2018-03-10-google-auto-installation-settings1.png)
+   ![Settings step 1](google-auto-installation-settings1.png)
 * Tap on the *Security* item  
-   ![Settings step 2](/assets/2018-03-10-google-auto-installation-settings2.png)
+   ![Settings step 2](google-auto-installation-settings2.png)
 * Make sure the checkbox "Unknown sources" (Allow installations from sources other than the Play Store) is enabled  
-   ![Settings step 3](/assets/2018-03-10-google-auto-installation-settings3.jpg)
+   ![Settings step 3](google-auto-installation-settings3.jpg)
 * After you finished the steps below, you should restore the setting.
 
 Then you can install the APK manually: on your phone, download & run the APK.
