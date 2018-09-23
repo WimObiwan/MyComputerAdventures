@@ -1,7 +1,7 @@
 ---
 title:  "Microsoft development tools build numbers - Visual Studio 2015 Update 3"
 tags: [c++, visualstudio, windows]
-image: /assets/2016-10-07-vs2015.png
+image: vs2015.png
 ---
 
 It is quite a challenge to understand the versions and build numbers of the Microsoft build chain.  This post tries to list them up...
