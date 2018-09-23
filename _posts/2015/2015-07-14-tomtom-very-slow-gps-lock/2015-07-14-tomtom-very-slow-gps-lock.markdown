@@ -1,7 +1,7 @@
 ---
 title: "TomTom very slow GPS lock"
 tags: [gps, tomtom]
-image: /assets/2015-07-14-tomtom-very-slow-gps-lock.jpeg
+image: tomtom-very-slow-gps-lock.jpeg
 ---
 
 During the last few weeks, my TomTom Live 825M Europe was extremely slow in finding the GPS location.

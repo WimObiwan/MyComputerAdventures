@@ -1,7 +1,7 @@
 ---
 title: "Amazon Glacier pricing example"
 tags: [aws]
-image: /assets/2015-11-22-amazon-glacier.png
+image: amazon-glacier.png
 ---
 
 A price calculation example to store your data on Amazon Glacier, and a few caveats that you need to consider.

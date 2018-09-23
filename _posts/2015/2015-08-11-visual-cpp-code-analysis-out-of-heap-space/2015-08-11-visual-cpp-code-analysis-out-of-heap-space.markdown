@@ -1,7 +1,7 @@
 ---
 title:  "Visual C++ Code Analysis fatal error 'Compiler is out of heap space'"
 tags: [c++, visualstudio, windows]
-image: /assets/2015-08-11-visual-cpp-code-analysis-out-of-heap-space-0.png
+image: visual-cpp-code-analysis-out-of-heap-space-0.png
 ---
 
 When running Visual C++ code analysis (in the *Visual Studio IDE* or *command line*) on a big project, you can get this fatal error: `C1060 compiler is out of heap space`. 

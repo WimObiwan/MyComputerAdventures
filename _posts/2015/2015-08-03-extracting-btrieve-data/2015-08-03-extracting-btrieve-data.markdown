@@ -1,7 +1,7 @@
 ---
 title:  "Extracting data from BTrieve files"
 tags: [btrieve, c++, powershell]
-image: /assets/2015-08-03-extracting-data-from-btrieve-0.png
+image: extracting-data-from-btrieve-0.png
 ---
 
 Some guidelines to extract data from BTrieve files using PowerShell.

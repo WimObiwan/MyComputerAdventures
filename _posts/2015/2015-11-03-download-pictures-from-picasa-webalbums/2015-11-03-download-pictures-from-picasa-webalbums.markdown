@@ -1,7 +1,7 @@
 ---
 title: "Download pictures from Picasa Webalbums"
 tags: [picasa, tools]
-image: /assets/2015-11-03-download-pictures-from-picasa-webalbums.png
+image: download-pictures-from-picasa-webalbums.png
 ---
 
 A simple but very useful tool to download one or all (public) Picasa Web Albums of a user.
