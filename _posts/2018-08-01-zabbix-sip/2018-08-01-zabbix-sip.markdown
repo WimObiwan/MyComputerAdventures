@@ -1,7 +1,7 @@
 ---
 title: "Zabbix SIP server monitoring"
 tags: [zabbix, sip, voip]
-image: /assets/2018-08-02-zabbix.png
+image: 2018-08-02-zabbix.png
 ---
 
 Zabbix can be used to monitor availability and up-time of a SIP server or phone.
