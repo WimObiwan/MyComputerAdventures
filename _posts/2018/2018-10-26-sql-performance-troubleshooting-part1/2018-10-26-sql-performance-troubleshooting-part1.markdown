@@ -4,7 +4,7 @@ tags: [sql, performance]
 image: sql-server-performance.png
 ---
 
-SQL Server data/log file fragmentation can increase delays on 
+SQL Server data/log file fragmentation can decrease performance.  This post gives some fixes for file and index fragmentation.
 
 <!--more-->
 
