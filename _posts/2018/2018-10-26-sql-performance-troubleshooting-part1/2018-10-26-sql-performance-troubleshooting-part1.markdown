@@ -158,3 +158,5 @@ Defragmenting indexes: indexes can be Reorganized (recommended for low fragmenta
   1. Expland the table entry in the Object Explorer.
   2. Right click on the Indexes node (to run the operation on all indexes) or an individual index under the Indexes node (to run the operation on a single index).
   3. Select Rebuild or Reorganize.
+
+  You can investigate the progress of a REORGANIZE operation by running the SQL script above.  The index fragmentation will get lower in real-time while the operation is running.
