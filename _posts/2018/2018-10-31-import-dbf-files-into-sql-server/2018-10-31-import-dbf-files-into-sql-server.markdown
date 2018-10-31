@@ -1,15 +1,15 @@
 ---
-title: "A tool to import DBF files into SQL Server"
+title: "DBFImport"
 tags: [sql]
 image: foxpro.png
 ---
 
-A simple tool to import old DBF files into SQL Server.
+A simple cross-platform tool to import old DBF files into SQL Server.
 
 <!--more-->
 
 # DBFImport
-A simple tool to import old DBF files into SQL Server.
+A simple cross-platform tool to import old DBF files into SQL Server.
 
 DBF files were/are used by 
  * dBase (Ashton Tate)
