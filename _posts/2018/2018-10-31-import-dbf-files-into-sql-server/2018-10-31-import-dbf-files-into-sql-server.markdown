@@ -1,162 +1,144 @@
 ---
-title: "SQL Server performance troubleshooting - Part 1"
-tags: [sql, performance]
-image: sql-server-performance.png
+title: "A tool to import DBF files into SQL Server"
+tags: [sql]
+image: foxpro.png
 ---
 
-SQL Server data/log file fragmentation can decrease performance.  This post gives some fixes for file and index fragmentation.
+A simple tool to import old DBF files into SQL Server.
 
 <!--more-->
 
-There are 2 types of fragmentations:
+# DBFImport
+A simple tool to import old DBF files into SQL Server.
 
-* Fragmentation of the data/log files on file system level.
+DBF files were/are used by 
+ * dBase (Ashton Tate)
+ * FoxBASE/FoxPro (Fox Software) / Visual FoxPro (Microsoft)
+ * Clipper (Nantucket / Computer Associates)
+ * ...
 
-   * The cause of physical file fragmentation is mainly the *auto-grow* feature in SQL Server.  This causes the data or log files to be extended in chunks whenever more space is needed.  Using auto-grow is discouraged: it causes heavy fragmentation, and causes a performance hit every time the auto-grow is performed. I have even seen a yoyo-effect when SQL command execution time is set to a low value: an `INSERT` command causes an grow operation which takes a long time, causing the `INSERT` to time out, and causing the grow to be reverted.  The `INSERT` was then retried forever by the application, every time with the same result.
-   * Disk fragmentation is only relevant for HDDs.  There is a huge *seek time penalty* compared to sequential reads, which makes reads a lot more efficient when they can be done sequentially.
-   * Defragmenting SSDs is discouraged.  There is no such *seek time penalty*.  Moreover, defragmenting will decrease the lifetime of your SSDs.  [More information on StackOverflow/SuperUser](https://superuser.com/q/97071).
+Built on DotNet Core 2.1, works on Windows, Linux, Mac.
 
-* Fragmentation of the pages inside the data/log.
+# Usage
 
-   * SQL Server uses pages (of 8KB), grouped in extents (of 64KB), to allocate space inside the files ([cfr. Microsoft](https://docs.microsoft.com/en-us/sql/relational-databases/pages-and-extents-architecture-guide)).  Event when the files are not fragmented physically, the pages/extents will get fragmented over time.
-   * Pages of indexes should not be completely full, since this will decrease performance because the first insert (or key update) on the page will cause a page split.  This is controlled by the *Fill factor* ([cfr Brentozar](https://www.brentozar.com/archive/2013/04/five-things-about-fillfactor/)).
+    dotnet DBFImport.dll -p <dbfpath> -s <server> -d <database> [--codepage <cp>] [--nobulkcopy]
+    dotnet DBFImport.dll -p <dbfpath> -c <conn> [--codepage <cp>] [--nobulkcopy]
+    
+       -p, --path                Required. Path to DBF file(s)
+       -s, --server              Required. SQL Server (and instance)
+       -d, --database            Required. Database name
+       -c, --connectionstring    Required. Database connection string
+       --codepage                Code page for decoding text
+       --nobulkcopy              Use much slower 'SQL Command' interface, instead of 'SQL BulkCopy'
+       --help                    Display this help screen.
+       --version                 Display version information.
 
-Backup
----
+The database must be an existing database.  Every DBF file is imported into a database table with the same name (if the table exists, it is dropped first).  A dot ('.') is displayed per 1000 records that are INSERTed in the database.
 
-Don't forget to make a fresh backup before doing these operations.
+# Examples
 
-The easiest way to do it is using SQL Server Management Studio:
+    dotnet DBFImport.dll "c:\My DBF files\*.DBF" DEVSERVER\SQL2017 ImportedDbfFiles
+    #Imports DBF files:
+    dotnet DBFImport.dll --path "c:\Data\My DBF files\*.DBF" `
+       --server DEVSERVER\SQL2017 --database ImportedDbfFiles
+    #Imports DBF files, and decode text using code page 1252:
+    dotnet DBFImport.dll --path "c:\Data\My DBF files\*.DBF" `
+       --server DEVSERVER\SQL2017  --database ImportedDbfFiles --codepage 1252 
+    #Imports DBF files, and connect to SQL Server using connection string:
+    dotnet DBFImport.dll --path "c:\Data\My DBF files\*.DBF" `
+       --connectionstring "Server=myServerAddress;Database=myDataBase;User Id=myUsername;Password=myPassword"
 
-* Open the backup window:  
-  ![Open the backup window](backup-1.png)
+# Typical output
 
-   1. Right click on your database
-   2. Open the *Tasks* submenu
-   3. Click *Back Up...*
+    PS C:\> dotnet .\DBFImport.dll `
+    >>     --path 'c:\Data\My DBF files\*.DBF' --codepage 1252 `
+    >>     --server 'DEVSERVER\SQL2017' --database 'ImportedDbfFiles'
+    Processing c:\Data\My DBF files\ABALANS.DBF...
+      LastUpdate:       16/08/2018
+      Fields:           14
+      Records:          5
+      Importing:
+      Inserted:         1
+      MarkedAsDeleted:  4
+      Duration:         00:00:00.9591436
+    Processing c:\Data\My DBF files\ANALYT.dbf...
+      LastUpdate:       26/10/2018
+      Fields:           22
+      Records:          33496
+      Importing:        ................................
+      Inserted:         32402
+      MarkedAsDeleted:  1094
+      Duration:         00:00:00.4355719
+    ...
 
-* Configure and start the backup:  
-  ![Configure and start the backup](backup-2.png)
+    Import finished.
+    Statistics:
+      Records:          4869097
+      Succeeded files:  714
+      Failed files:     0
+      Total Duration:   00:02:46.6250966
 
-  1. Don't forget to enable *Copy-only backup*.  This is needed to prevent messing up with existing (transaction log &amp; differential) backups, which would get corrupt when a new full backup is done outside the schedule.
-  2. Set a new location for the backup by removing the existing one, and adding a new one.
-  3. Click the *OK* button to start the backup.
+# Download & installation
+ 
+ * Requires dotnet Core 2.1 (available on Windows, Linux, Mac).  
+   * Go to https://getdotnet.org, click "Download", click "Download .net Core Runtime".
+   * Or install using Chocolatey: `choco install dotnetcore-runtime`
+ * Download & unzip the zip-file DBFImport.zip from https://github.com/WimObiwan/DBFImport/releases/latest
 
-Physical file fragmentation
----
+# Typical speed characteristics
 
-(This doesn't apply to SSDs.  Only do physical file defragmentation on regular HDDs!)
+For what it's worth, this is a real situation:
 
+ * DBFImport.dll running on high-end laptop with SSD disk, Intel i7, 16 GB RAM.
+ * DBFImport.dll compiled in Release mode, running on Windows 10 (1804), using dotnet Core 2.1.205 SDK.
+ * Import of 714 local DBF files, total size 2493014358 bytes (2.32 GiB)
+ * Containing 4868381 records (excluding those marked for deletion)
+ * {1} Import into a local SQL Server 2017 Developer Edition.
+ * {2} Import into a remote SQL Server 2016 Standard Edition (server specs unknown, virtualized, hosted in a datacenter)
+ * In every test, the existing (filled) tabled was dropped and recreated.
 
+|                              | {1} Local SQL Server 2017            | {2} Remote SQL Server 2016 |
+| ---------------------------- | ------------------------------------ | -------------------------- |
+| SQL Command (`--nobulkcopy`) | 16:11.421 (971 s)<br>4823 records/s<br>2.36 MiB/s | (\*) 50.5 hours<br>27 records/s<br>13.39 KiB/s |
+| SQL BulkCopy                 | 2:05.705 (126 s)<br>38729 records/s<br>18.91 MiB/s  | 9:48.394 (588 s)<br>8274 records/s<br>4.04 MiB/s |
+| Speedup of BulkCopy          | 7.73x                                | 308.98x                            |
 
-There are several options to defragment this.
+(\*) This test took ages, these numbers were obtained by extrapolation.
 
-* One way to do it is running a defragmentation of the complete disk from within *Windows Explorer.  The advantage is that there are no extra tools needed.  The drawback is that this defragments all files (not only the data/log files).  If your data & log files are stored on different disks (which is a good practice), this needs to be repeated for every disk.  Be aware that there can be multiple data files.  
+Resource utilization of dotnet.exe:
 
-  ![Defragment disk](defragment-disk-1.png)
+|                              | {1} Local SQL Server 2017                        | {2} Remote SQL Server 2016 |
+| ---------------------------- | ------------------------------------------------ | -------------------------- |
+| SQL Command (`--nobulkcopy`) | CPU: 4-8% (during 16 minutes)<br>Memory: 12.2 MB | CPU: 0%<br>Memory: 10.9 MB |
+| SQL BulkCopy                 | CPU: 12% constantly (during 2 minutes)<br>Memory: 12.1 MB | CPU: 1-4% (during 10 minutes)<br>Memory: 11.7 MB |
 
-  1. Open *Windows Explorer* and right click on the drive where the files are stored.
-  2. Click *Properties* to open the disk properties.
+# Impact of the option `--nobulkcopy`
 
-  ![Defragment disk](defragment-disk-2.png) 
+* When using BulkCopy, alle INSERTs are done in Batches of 10000 records.  When an error happens, the current batch is rolled back, and the BuldCopy is aborted.  All records INSERTed during previous batches will be present in the table.
+* When not using BulkCopy, every INSERT is done (separately using a prepared SQL Command), inside a single transaction.  This means that when an error occurs, the complete transaction is rolled back, and no records will be present in the database.
 
-  1. Go to the *Tools* tab
-  2. Click *Optimize*, and click *Optimize* again on the next window to start the defragmentation.
+# Known issues & To do's
 
-  A last remark when using SSDs: The *Optimize* process on SSD disks doesn't do a defragmentation, but just sends a *trim* to reclaim free blocks.  So this doesn't apply to this article on performance.  [More info on StackOverflow/Superuser](https://superuser.com/a/479211)
+Any feedback ([issues](https://github.com/WimObiwan/DBFImport/issues) or [pull requests](https://github.com/WimObiwan/DBFImport/pulls)) is welcome!
 
-* There is a way to run defragmentation on file level, which requires the SysInternals `contig.exe` tool.  
-Two ways to get it:
+ * Not alle datatypes from the xBase flavors are implemented.
+ * Memo types (and DBT files) are not (yet) implemented.
+ * Currently only SQL Server is supported.
 
-  * By downloading it from the [SysInternals website](https://docs.microsoft.com/en-us/sysinternals/downloads/contig).
-  * Or by installing using [Chocolatey](https://chocolatey.org/packages/sysinternals):
+# Alternatives
 
-    {% highlight powershell %}
-    choco install sysinternals
-    {% endhighlight %}
+There are alternatives:
 
-  Next you analyze individual data/log files by running:
+ * [Microsoft OLE DB Provider for Visual FoxPro 9.0 (VfpOleDB.dll)](https://www.microsoft.com/en-us/download/details.aspx?id=14839)
+ * [Visual FoxPro ODBC Driver](https://docs.microsoft.com/en-us/sql/odbc/microsoft/visual-foxpro-odbc-driver?view=sql-server-2017)
+ * Commercial products
+ 
+ For me these were insufficient because of:
+ 
+ * incompatibilities between 32-bit drivers and 64-bit SQL Sever
+ * instabilities of SQL Server when using some of the drivers in linked servers
 
-  {% highlight powershell %}
-  contig.exe -a '&lt;filepath&gt;'
-  {% endhighlight %}
+# References
 
-  ![contig.exe -a](defragment-contig-1.png)
-
-  Doing the actual defragmentation can be done by removing the `-a`:
-
-  {% highlight powershell %}
-  contig.exe '&lt;filepath&gt;'
-  {% endhighlight %}
-
-  ![contig.exe -a](defragment-contig-2.png)
-
-  In this example, the defragmentation has turned the 14 original fragments into 1 contiguous fragment. In a more realistic scenario which was executed at a customer, almost 9000 fragments were turned into 2 fragments.  
-  The `contig.exe` tool doesn't report any progress of the file defragmentation.  But the progress can be *monitored* by running `contig.exe` using `-a` in another window, where you will see that the fragments are decreasing rapidly.  
-  In theory, it is perfectly safe to *kill* a running `contig.exe`, by pressing `Ctrl-C`.  The tool can be restarted later on, causing it to continue where it was stopped.
-  It is unclear if `contig.exe` is as smart as the whole-disk *Optimize* tool mentioned above, with regard to SSDs.  So I don't recommend running it on SSDs.
-  
-
-Logical file fragmentation
----
-
-In this topic, we are talking about index fragmentation.  But be aware that (in the likely case that the table has a clustered index), a table is just a special kind of index.  
-A SQL Server index can be considered fragmented when it has more than 5% fragmentation.  Tables smaller than 1000 pages will normally not benifit from defragmentation.
-
-The most fragmented indexes can be found by running this query on your database:  (to be repeated per database)
-
-{% highlight sql %}
-WITH fragmented_indexes AS
-(
-	SELECT 
-		s.name [schema], t.name [table], i.name [index], ips.page_count, 
-		ips.avg_fragmentation_in_percent, 
-		ips.page_count * ips.avg_fragmentation_in_percent weight
-	FROM sys.dm_db_index_physical_stats (DB_ID(), NULL, NULL, NULL, NULL) ips
-		JOIN sys.indexes i ON ips.object_id = i.object_id AND ips.index_id = i.index_id
-		JOIN sys.tables t ON i.object_id = t.object_id
-		JOIN sys.schemas s ON t.schema_id = s.schema_id
-	WHERE page_count >= 1000 and avg_fragmentation_in_percent >= 5
-)
-SELECT * 
-FROM fragmented_indexes
-ORDER BY weight DESC;
-{% endhighlight %}
-
-Or if you have many indexes on many tables, the next query can be used to show a list per table:
-
-{% highlight sql %}
-WITH fragmented_indexes AS
-(
-	SELECT 
-		s.name [schema], t.name [table], i.name [index], ips.page_count, 
-		ips.avg_fragmentation_in_percent, 
-		ips.page_count * ips.avg_fragmentation_in_percent weight
-	FROM sys.dm_db_index_physical_stats (DB_ID(), NULL, NULL, NULL, NULL) ips
-		JOIN sys.indexes i ON ips.object_id = i.object_id AND ips.index_id = i.index_id
-		JOIN sys.tables t ON i.object_id = t.object_id
-		JOIN sys.schemas s ON t.schema_id = s.schema_id
-	WHERE page_count >= 1000 and avg_fragmentation_in_percent >= 5
-)
-SELECT 
-	[schema], [table], COUNT(1) indexes, SUM(page_count) page_count,  
-	AVG(avg_fragmentation_in_percent) avg_fragmentation_in_percent, 
-	SUM(weight) weight
-FROM fragmented_indexes
-GROUP BY [schema], [table]
-ORDER BY weight DESC;
-{% endhighlight %}
-
-Defragmenting indexes: indexes can be Reorganized (recommended for low fragmentation, e.g. between 5% and 20%), or Rebuild (recommended for heavy fragmentation, e.g. more than 20%).  Index Reorganization can be done on-line.  Index Rebuilds can only be done on-line on SQL Server Enterprise Edition.
-
-
-* On SQL Server Standard Edition (or above), you should run a Maintenance plan to reorganize/rebuild indexes regularly, e.g. every week.
-* Alternatively, [Ola Hallengren](https://ola.hallengren.com/sql-server-index-and-statistics-maintenance.html) has maintenance scripts that can used even on SQL Server Express Edition where no SQL Server Agent is available.  (Kohera)[https://kohera.be/blog/sql-server/providing-a-sql-server-express-edition-with-a-solid-maintenance-plan/] shows how to use the Windows Task manager as an alternative.
-* Indexes can be defragmentated manually, per table or index, by running REORGANIZE or REBUILD on indexes.  
-  ![Reorganize Rebuild](reorganize-rebuild.png)
-
-  1. Expland the table entry in the Object Explorer.
-  2. Right click on the Indexes node (to run the operation on all indexes) or an individual index under the Indexes node (to run the operation on a single index).
-  3. Select Rebuild or Reorganize.
-
-  You can investigate the progress of a REORGANIZE operation by running the SQL script above.  The index fragmentation will get lower in real-time while the operation is running.
+ * https://en.wikipedia.org/wiki/.dbf
+ * http://www.manmrk.net/tutorials/database/xbase/ 
