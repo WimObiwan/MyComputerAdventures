@@ -1,0 +1,197 @@
+---
+title: "One year of Plastic"
+tags: [git, plastic]
+image: plastic-logo.png
+---
+
+My experience after one year of working with PlasticSCM, after moving from GIT.x
+
+<!--more-->
+
+> This page has been updated since the initial publication:
+> * 2018-08-13: Added additional issues, added links to some UserVoice items.
+> * 2018-08-14: Added issues about going offline.
+
+Before I started working for my current employer, I had never heard of [PlasticSCM](https://www.plasticscm.com/).  It is built by a Spanish software company *Códice*.
+
+What's Good
+===
+
+* The biggest asset of PlasticSCM is that everything is extremely simple
+* It is obviously a (more) central approach to SCM, which is in many situations a less complex setup than GIT.
+* I really love the way PlasticSCM works with *branches*.
+
+  * with GIT, following a branch in the past is quite a challenge...
+  * renaming a branch (both on the server and all of the clients) is always a hassle when working with a lot of developers
+
+* Possibility to update commit messages, which is so trivial but is *by design* impossible in GIT.
+* Cherry picking shows a visual link (in GIT, the link with the original commit is unclear, at least in the tools I used)
+* Automatic merge conflict resolution seems to be as good as GIT, which is great.  The visual merging (with understanding file syntax, such as collapsing) is a big asset, most of the time.
+* The step from both TFS and GIT to PlasticSCM is very easy.  And new developers that never used any versioning system get on track fast.
+* And finally, I really love the *XML* support in the command line tool `cm.exe`.  This makes it extremely useful for scripting in Powershell.  This is something GIT should support too, beside their `--porcelain` switch.
+* It is very stable: 
+  * I don't think I had any crash or instability (apart from some visual redraw issues, see below)
+  * apart from the symlink issue (see below), I have never lost any data or a corrupt repository.
+
+What is less good...
+===
+
+The simplicity and (lack of) maturity comes with a burden.  I have often got headaches/frowns/WTF-moments with PlasticSCM.  
+When you google them, almost all of them are *known*, and addressed as either "planned" or "we do it different".  And I know some of them are probably caused by *my way of working*, but still hinder *my* user experience on Plastic.
+
+Workflow/functional things that I miss daily:
+---
+
+* Commit only specific lines.  This is something I use continuously on GIT (so-called *hunks*) to isolate changes in separate commits.  
+[[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/15636960-add-git-like-staging-of-parts-of-files), and several others.
+* Squash/Amend commits.  Use-case: you just checked in a change, but something else should be included.  In GIT, this is easy (as long as you didn’t push) by doing a second commit, and squash them into one.  Or by amending the original commit.
+[[Also discussed on UserVoice, at least the amend part]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/5221214-amend-commits)
+* Reset commits.  Use-case: you just checked in a change, but something needs to be changed.  In GIT, this is easy (as long as you didn’t push) by doing a *Reset*, which takes the committed files back into your pending changes, where they can be changed.  
+[[Also discussed on UserVoice, where another solution is proposed, but in my opinion less generic]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/7010758-create-shelve-from-changeset)
+* Blame.  I miss the blame functionality that tools like GITExtensions provide.  When troubleshooting a problem, blame is extremely helpful to identify when specific lines were added to the code-base.  PlasticSCM offers a command-line alternative which can be useful, but still too cumbersome to be used on a day-by-day basis.  It should be integrated in the GUI.
+* Staging...  There is no place to put files between your workspace and the repository.  I use the staging area continuously as a *personal review* stage of my own code (together with the staging/committing of partial files/hunks).  
+[[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/6387309-add-git-like-staging)
+* When the PlasticSCM server is down or unreachable, you are in trouble.  Every click you do results in a freeze for about half a minute, and finishes with an error message.  When the server comes up again, everything is back to normal, even without restarting the client.
+  * I guess the solution is setting up local server, but I think this is a big step back from the simplicity that PlasticSCM provides to my workflow now.
+  * Additionally, I didn't dare to try it out because of stories about changing changeset ids, which is absolutely intolerable for me...  
+  X-links seem to point to some GUID internally (not a changeset-id), so I guess the *changing changeset ids* don’t affect X-links.
+  * A workaround would be some kind of *offline mode*, to allow using some part of the functionality without a server.  There is [some documentation](https://www.plasticscm.com/documentation/ides/plastic-scm-version-control-ides-integrations-guide.shtml#WorkingofflineandunbindingthesolutionfromPlasticSCM) about doing it in the VisualStudio plugin.  But this is not what I want to do: I want to *temporarily* work offline, preferably with as much functionality of the SCM still working, and definitely without unbinding or removing source control bindings.  And it is not related to VisualStudio: it should be in the Plastic client itself.  
+  This is something that is supported by other server-centric systems like Team Foundation Server.
+* When switching between branches in Plastic, you always need to shelve/unshelve.  Even when creating a new branch on the current changeset!  This is an excellent feature of GIT (only recognized when you lose it…), which allows to change branch (even with pending changes) when this doesn’t result in conflicts.
+* No simple support for rebase. [PlasticSCM states that it is not needed](http://blog.plasticscm.com/2016/06/plastic-vs-git-rerere-and-rebase.html), and I agree to some extent.  But, in my opinion, it is still a missing feature which has useful applications.
+
+Annoying differences
+---
+
+Things that work different and cause me friction, even after a year:
+
+* Files keep getting *checked out* even when there are no changes.  As a workaround, I usually check which files I modified in *Pending Changes*, and filter them out manually.  Not a big issue, but it is time-consuming to *Undo Changes" on the files that weren’t changed.  Maybe I will write a Powershell script to do this automatically.
+* There is a strange difference between *working on a changeset* and *working on a branch*.  
+![plastic-changeset.png](plastic-changeset.png)  
+![plastic-branch.png](plastic-branch.png)
+It is something I only discovered after 6 months working in Plastic.   
+Probably, it was due to the fact that I use the Branch Explorer to switch between branches.  In GIT you have a similar difference, but I never had a problem with it, since going *off-branch* was always clearly indicated by the tools I used.
+* When in *Branch-mode*, you can update your workspace with the last commits from other users (open *Pending Changes*, right-click, *Apply local change*). This doesn’t work in *Changeset-mode*. When you are not on the last changeset and when you have pending changes, it is impossible to switch between the 2 *modes* without first shelving the changes.   
+
+* Incompatibilities between GIT *.gitignore* and PlasticSCM *ignore.conf*.  The syntax is similar, but:
+  *	Many specialties are undocumented.  You need to try them out to know what's going on.
+  * When you want to exclude the folder *.vs*, you need to add both `.vs` and `.vs/` before the directory .vs was ignored (`.vs**` works too, but is slightly different since it possibly matches more files)
+
+  [[Discussed on UserVoice, where a fallback to .gitignore is proposed when the Plastic ignore file doesn't exist]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/8709043-use-the-gitignore-file-if-it-is-present)
+
+Missing features:
+--- 
+
+* Trying to remove certain changesets give strange errors:  
+![plastic-remove-changeset1.png](plastic-remove-changeset1.png)
+ 
+  * It would be great to know the reason...  Especially when the possible ones listed don’t apply...
+  * Is it because it contains an X-link to another repository?
+  * Or is it because the changeset the X-link points to has been deleted itself? (in which case it seams a bug to me)  
+![plastic-remove-changeset2.png](plastic-remove-changeset2.png)
+
+* The Branch explorer is the (in my opinion) biggest feature of PlasticSCM, but I miss the ability to show the Changeset id in view (without needing to click or hoover on each individual changeset.  Generally, it would be great to further customize the GUI.  
+Strangely, the changeset id is shown when using the Version tree, which is a similar view (*Workspace Explorer*, right-click on file, *View history as 2D revision tree*):  
+![plastic-changesetidin2dview.png](plastic-changesetidin2dview.png)
+
+  [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/8876401-show-changeset-numbers-in-branch-explorer)
+
+
+* Command-line / Automation / `cm.exe`
+  * Unable to obtain current branch...  Some ideas: http://www.plasticscm.net/topic/3223-get-current-branch-name-on-command-line/ but this is not a clean solution to me.
+* Probably I’m too old-school, but generally I miss the concept of having both *(customizable?) toolbar-buttons for fast access* vs *menu bar with all (more advanced) features)*.  Probably the same reason I still dislike the Ribbon-bar in MS-Office...
+* Some actions prevent changesets to be removed (like the origin of a cherry pick or merge).  It should be possible to cherry pick a changeset and remove the original later on (e.g. after committing to the wrong branch).
+* Entering commit messages would be greatly improved when there would be autocompletion and spelling checking, as done by GITExtensions.  
+[[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/34336972-auto-complete-suggest-filenames-and-or-class-types)
+
+Bugs, annoyances, sloppiness:
+--- 
+
+* Several redraw problems  
+  ![plastic-redraw1.png](plastic-redraw1.png)
+  ![plastic-redraw2.png](plastic-redraw2.png)
+* Inconsistent "menus":
+  
+  * When *merging*: the *Comparison* settings are located in some Bootstrap-on-mobile-like menu at the right-side:  
+  ![plastic-inconsistency1.png](plastic-inconsistency1a.png)
+  * When *diffing*: the *Comparison* settings are located in an options drop-down button:  
+  ![plastic-inconsistency2.png](plastic-inconsistency1b.png)
+
+* Inconsistent visualization of "properties/attributes":
+
+  * When showing branch properties in *Branches* overview, *Properties* and *Attributes* are shown as tabs.
+  ![plastic-inconsistency2a.png](plastic-inconsistency2a.png)
+  * When showing branch properties in *Branch Explorer*, *Properties* and *Attributes* are shown as some "accordion" panel.
+  ![plastic-inconsistency2b.png](plastic-inconsistency2b.png)
+ 
+* Aborting certain merges is even more complex than in git.  Some situations can only be solved by using the command line. This post saved me many times: [Abort merge](http://www.plasticscm.net/topic/1193-abort-merge/)
+* I also haven't found a way yet to interrupt the merge conflict resolution.  If you merge a huge branch with 100 changed files and 50 of them are causing conflicts, then you will get 50 times a merge resolution window.  There is no way to say *stop*, *cancel*, *pause/resume*, use origin for all files, ...
+* The right-side panel is used both for *filters* as for *properties* (such as attributes).  This is confusing.  The [Digikam](https://digikam.org) GUI solves a similar problem by using 2 panels (by default): left for all kinds of filtering on the pictures, right for properties/attributes/... of the pictures  Moreover, in the *Branch explorer*, you need to press the button *Options* to see the *Properties*. Even after a year, I'm not yet used to it.
+* It is not intuitive whether specific properties/settings are applied to all users or are user-specific.  Branch tags, color rules for changesets, ...
+* In the Branch Explorer, a graph can be displayed, showing the number of commits per day:  
+![plastic-stats1.png](plastic-stats1.png)
+But when you show the Options (which I leave open all the time to show the properties), the last year (in my case) isn’t shown because it is hidden by the Options panel.  And there is no way to re-scale or scroll the graph.
+![plastic-stats2.png](plastic-stats2.png)
+ 	
+* When you want to apply an Attribute, set the value, but forget to set the Attribute name:  
+![plastic-attribute.png](plastic-attribute.png)
+You obviously get a message-box, but after clicking *OK*, the parent *Apply attribute* window is closed too, including the text you just entered below Value...
+In my opinion, better would be to not show a message box, but disable the OK button until an Attribute is selected.
+
+* In the branch window, after updating something in the properties of the right panel, the change is immediately visible in the branch list, but the filter is not re-applied (or at least not always).  E.g., when you have a filter on an attribute, and add an attribute, the branch window still shows the filtered results on the old attribute value.
+ 
+* Very often I have these errors in the Pending changes view: (multiple times in a row)  
+  ![plastic-pendingchangeserrors.png](plastic-pendingchangeserrors.png)   
+  ```
+  Exception has been thrown by the target of an invocation.
+  An item with the same key has already been added.
+  ```
+  After clicking OK (many times), the application seems to continue.  No big deal, but still annoying.  
+  Another place where the same errors happen is when opening the *2D Version tree* for a specific file in the *Workspace* (*Workspace Explorer*, right-click on file, *View history as 2D revision tree*).
+* Another error I often get is this one:  
+  ![plastic-couldnotfindfile.png](plastic-couldnotfindfile.png)
+  ```
+  Could not find file %temp%\<guid>.cs
+  ```
+  It looks bad, but I don't think I ever lost something.
+* Since I removed an edition of Visual Studio a few months ago (in my case *Visual Studio Test edition*), every upgrade of Plastic results in the error:
+`Error running C:\Program Files (x86)\Microsoft Visual Studio\2017\TestPro\Common7\IDE\vsixinstaller.exe /q "C:\Program Files\PlasticSCM5\client\plasticscm-visualstudio.vsix": The system cannot find the path specified.`
+Which is reasonable, since the Visual Studio edition was removed, and the directory `C:\Program Files (x86)\Microsoft Visual Studio\2017\TestPro` no longer exists.
+This wouldn't be a problem, but this also causes the Visual Studio integration in the other editions of Visual Studio (Professional, Ultimate) not being applied either.  Probably, the installers are run sequentially, and the *Test-edition* is the first one that is applied.  
+Anyway, since encountering this problem, I run this command after applying every Plastic upgrade:
+
+      dir "C:\Program Files (x86)\Microsoft Visual Studio\2017\" `
+        | %{ Join-Path $_.FullName 'Common7\IDE\vsixinstaller.exe' } `
+        | %{ . "$_" /q "C:\Program Files\PlasticSCM5\client\plasticscm-visualstudio.vsix" }
+
+* I use *symlinks* very often, and they are said to be supported, but I don’t get how it works:  
+  *	Visually, they are shown as 0 bytes:
+    ![plastic-symlinks1.png](plastic-symlinks1.png)
+  *	Contents in diff:  
+    ![plastic-symlinks2.png](plastic-symlinks2.png)
+  * If it is not a bug, it is at least not intuitive.
+  * After losing code because of these issues, I stopped using symlinks with PlasticSCM.
+  
+  [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/7562991-support-symlinks-on-windows)
+
+* There is an inconsistency with branch names in command line queries:  
+  ![plastic-cm-findbranches-inconsistency.png](plastic-cm-findbranches-inconsistency.png)  
+  So, the `name` the where clause is the final part of the path, and `name`in the output is the full path.
+
+  ```
+  cm find "branches where name = 'Critical'" "--format='{name}'"
+  cm find "branches where name = '/Main/Critical'" "--format='{name}'"
+  ```
+
+  [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/13071435-add-support-for-namespace-in-find-branch-command)
+
+Openness
+---
+
+And finally some thoughts about the openness...
+
+* So many proprietary tools I used in the past have been shut down or abandoned.
+* Less wide-spread support by third-party tools / IDEs (e.g. Visual Studio Code)  
+  [[Also discussed on UserVoice]](https://plasticscm.uservoice.com/forums/15467-general/suggestions/18853981-scm-extension-for-microsoft-s-visual-studio-code)
+
+* The lock-in into a Version Control System (the Plastic *server*) and a Version Control Client (the Plastic *client*). With no easy way to replace one or the other.
